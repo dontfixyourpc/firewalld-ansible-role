@@ -1,0 +1,7 @@
+---
+# Default configuration of ports
+default_ports: 
+    # SSH
+    - number: 22
+      protocol: tcp
+      state: enabled

@@ -1,0 +1,26 @@
+---
+- name: Ensure that firewalld is running
+  service:
+    name: firewalld
+    state: started
+    enabled: yes
+  
+- name: Configure custom ports for firewalld
+  firewalld:
+    port: "{{ item.number }}/{{ item.protocol }}"
+    permanent: yes
+    state: "{{ item.state }}"
+  with_items:  "{{ firewalld.ports }}"
+  when: firewalld is defined
+
+- name: Configure default ports for firewalld
+  firewalld:
+    port: "{{ item.number }}/{{ item.protocol }}"
+    permanent: yes
+    state: "{{ item.state }}"
+  with_items: "{{ default_ports }}"
+
+- name: Restart firewalld after the configuration 
+  service: 
+    name: firewalld
+    state: restarted
